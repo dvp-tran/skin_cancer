@@ -3,3 +3,6 @@
 *.ipynb_checkpoints
 *.h5
 data/*
+other_data/*
+ISIC-images/*
+model/*
