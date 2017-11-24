@@ -1,28 +1,10 @@
-from keras.models import Sequential
-from keras.layers.core import Dense, Dropout, Activation
-from keras.optimizers import SGD, Adam, RMSprop
-from keras.utils import np_utils
-import numpy as np
-np.random.seed(42)
-import keras.backend as K
-from itertools import product
-from functools import partial
-import numpy as np
-
 from keras import backend as K
+
+
 def weighted_categorical_crossentropy(weights):
     """
-    A weighted version of keras.objectives.categorical_crossentropy
-
-    Variables:
-        weights: numpy array of shape (C,) where C is the number of classes
-
-    Usage:
-        weights = np.array([0.5,2,10]) # Class one at 0.5, class 2 twice the normal weights, class 3 10x.
-        loss = weighted_categorical_crossentropy(weights)
-        model.compile(loss=loss,optimizer='adam')
+    [w_0, w_1] : weight of 0 class and weight of 1 class
     """
-
     weights = K.variable(weights)
 
     def loss(y_true, y_pred):
@@ -31,7 +13,7 @@ def weighted_categorical_crossentropy(weights):
         # clip to prevent NaN's and Inf's
         y_pred = K.clip(y_pred, K.epsilon(), 1 - K.epsilon())
         # calc
-        loss = y_true * K.log(y_pred) * weights
+        loss = y_true * K.log(y_pred) * weights[1] + (1 - y_true) * K.log(1 - y_pred) * weights[0]
         loss = -K.sum(loss, -1)
         return loss
 
