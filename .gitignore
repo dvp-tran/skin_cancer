@@ -2,6 +2,7 @@
 *.DS_Store
 *.ipynb_checkpoints
 *.h5
+*.zip
 data/*
 other_data/*
 ISIC-images/*
