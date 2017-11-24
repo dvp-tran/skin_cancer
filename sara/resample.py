@@ -28,3 +28,24 @@ def evaluate_imbalanced_ML(model, X, Y, n_split):
         scores.append([precision.mean(), recall.mean()])
         print('the precision is %d' % precision.mean())
     return scores
+
+
+def random_undersampling(X, Y, n_sample=5):
+    """
+    X,y : numpy arrays
+    return :
+    5 random ensemble of indices general_balenced_set:
+        general_balenced_set[0] = the shuffeled indices that inssure the class balance
+    """
+    indices = np.array(range(len(Y)))
+    positive_samples = indices[Y==1]
+    negative_samples = indices[Y==0]
+    general_balenced_set = []
+    for k in range(n_sample):
+        indices_ = np.random.choice(negative_samples, 1483, replace=False)
+        # append positive and negative
+        balenced_set = np.append(indices_, positive_samples)
+        # shuffle indices
+        balenced_set = np.random.shuffle(balenced_set)
+        general_balenced_set.append(balenced_set)
+    return general_balenced_set
